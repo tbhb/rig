@@ -6,6 +6,319 @@ Rig uses a layered TOML configuration system that supports user-wide defaults, d
 
 The configuration system is built around frozen dataclasses that represent the schema. All configuration objects are immutable once created, which ensures thread safety and prevents accidental modification.
 
+## File locations
+
+Rig looks for configuration files in multiple locations, each representing a different scope:
+
+| Location | Layer | Purpose |
+|----------|-------|---------|
+| `~/.local/rig/config.toml` | Global | User-wide defaults |
+| `.rig.toml` in ancestor directories | Ancestor | Group-level configuration |
+| `.rig.toml` in project root | Project | Project-specific settings |
+| `.rig.local.toml` in project root | Local | Personal overrides (gitignored) |
+
+### Path utilities
+
+The `rig.config` module exports functions to get these standard paths:
+
+```python
+from pathlib import Path
+from rig.config import (
+    get_global_config_path,
+    get_project_config_path,
+    get_local_config_path,
+)
+
+# Global config path
+global_path = get_global_config_path()  # ~/.local/rig/config.toml
+
+# Project-specific paths (requires project root)
+project_root = Path("/path/to/project")
+project_path = get_project_config_path(project_root)  # /path/to/project/.rig.toml
+local_path = get_local_config_path(project_root)  # /path/to/project/.rig.local.toml
+```
+
+These functions return paths without checking existence. Use the discovery functions to find files that actually exist.
+
+## File discovery
+
+The discovery module finds all configuration files in the resolution stack.
+
+### discover_config_files
+
+Discover all config files for a project, in resolution order:
+
+```python
+from pathlib import Path
+from rig.config import discover_config_files, ConfigFile
+
+project_root = Path("/home/user/projects/myapp")
+config_files = discover_config_files(project_root)
+
+for cf in config_files:
+    status = "exists" if cf.exists else "not found"
+    print(f"{cf.layer.value}: {cf.path} ({status})")
+```
+
+Output:
+
+```text
+global: /home/user/.local/rig/config.toml (not found)
+ancestor: /home/user/projects/.rig.toml (exists)
+project: /home/user/projects/myapp/.rig.toml (exists)
+local: /home/user/projects/myapp/.rig.local.toml (not found)
+```
+
+The function returns all potential config file locations. Files that don't exist are included with `exists=False`, which is useful for understanding the full resolution stack.
+
+**Arguments:**
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `project_root` | `Path` | Absolute path to the project root directory |
+| `home_dir` | `Path \| None` | Home directory boundary (defaults to `Path.home()`) |
+
+**Returns:** `tuple[ConfigFile, ...]` in resolution order.
+
+### find_ancestor_configs
+
+Find `.rig.toml` files in ancestor directories:
+
+```python
+from pathlib import Path
+from rig.config import find_ancestor_configs
+
+project_root = Path("/home/user/projects/myapp")
+ancestors = find_ancestor_configs(project_root)
+
+# Returns paths in farthest-to-nearest order
+for path in ancestors:
+    print(path)
+```
+
+Output:
+
+```text
+/home/user/.rig.toml
+/home/user/projects/.rig.toml
+```
+
+The search walks up from the start directory and stops at the home directory or filesystem root. The start directory itself is not included (that's the project config).
+
+**Arguments:**
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `start` | `Path` | Directory to start searching from |
+| `home_dir` | `Path \| None` | Stop boundary (defaults to `Path.home()`) |
+
+**Returns:** `tuple[Path, ...]` of existing `.rig.toml` files, farthest first.
+
+### ConfigFile
+
+A frozen dataclass representing a discovered configuration file:
+
+```python
+from dataclasses import dataclass
+from pathlib import Path
+from rig.config import ConfigLayer, ConfigSchema
+
+@dataclass(slots=True, frozen=True)
+class ConfigFile:
+    path: Path
+    layer: ConfigLayer
+    exists: bool
+    content: ConfigSchema | None = None
+```
+
+**Attributes:**
+
+| Attribute | Type | Description |
+|-----------|------|-------------|
+| `path` | `Path` | Absolute path to the config file |
+| `layer` | `ConfigLayer` | Which configuration layer this file belongs to |
+| `exists` | `bool` | Whether the file exists on disk |
+| `content` | `ConfigSchema \| None` | Parsed content if loaded, `None` otherwise |
+
+## Parsing
+
+The parser reads TOML files and constructs `ConfigSchema` objects.
+
+### parse_config_file
+
+Parse a config file into a `ConfigSchema`:
+
+```python
+from pathlib import Path
+from rig.config import parse_config_file
+
+path = Path("/path/to/project/.rig.toml")
+config = parse_config_file(path)
+
+# Access parsed values
+print(config.worktree.default_location)
+print(config.worktree.sync.link)
+```
+
+The parser handles:
+
+- Reading and decoding the file as UTF-8
+- Parsing TOML syntax
+- Validating structure against the schema
+- Converting keys from kebab-case to snake_case
+- Constructing immutable dataclass instances
+
+**Arguments:**
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `path` | `Path` | Absolute path to the config file |
+
+**Returns:** `ConfigSchema` with parsed values.
+
+**Raises:**
+
+| Exception | When |
+|-----------|------|
+| `ConfigFileAccessError` | File cannot be read |
+| `ConfigParseError` | File contains invalid TOML syntax |
+| `ConfigValidationError` | Structure or values are invalid |
+
+### Key conversion
+
+TOML uses kebab-case by convention, while Python uses snake_case. The parser automatically converts keys:
+
+| TOML key | Python attribute |
+|----------|------------------|
+| `default-location` | `default_location` |
+| `delete-branch` | `delete_branch` |
+| `extend-post-add` | `extend_post_add` |
+
+Example TOML file:
+
+```toml
+[worktree]
+default-location = "local"
+delete-branch = false
+
+[worktree.sync]
+extend-link = [".envrc", "CLAUDE.md"]
+```
+
+Parsed result:
+
+```python
+config.worktree.default_location  # "local"
+config.worktree.delete_branch     # False
+config.worktree.sync.extend_link  # (".envrc", "CLAUDE.md")
+```
+
+## Errors
+
+The configuration system uses a hierarchy of exceptions for different error conditions.
+
+```mermaid
+graph TD
+    A[ConfigError] --> B[ConfigParseError]
+    A --> C[ConfigValidationError]
+    A --> D[ConfigFileAccessError]
+```
+
+### ConfigError
+
+Base exception for all configuration errors. Catch this to handle any config-related error:
+
+```python
+from rig.config import ConfigError, parse_config_file
+
+try:
+    config = parse_config_file(path)
+except ConfigError as e:
+    print(f"Configuration error: {e}")
+```
+
+### ConfigParseError
+
+Raised when a file contains invalid TOML syntax:
+
+```python
+from dataclasses import dataclass
+from pathlib import Path
+
+@dataclass(slots=True, frozen=True)
+class ConfigParseError(ConfigError):
+    path: Path
+    line: int | None
+    column: int | None
+    detail: str
+```
+
+**Attributes:**
+
+| Attribute | Type | Description |
+|-----------|------|-------------|
+| `path` | `Path` | Path to the config file |
+| `line` | `int \| None` | Line number (1-indexed) where error occurred |
+| `column` | `int \| None` | Column number (1-indexed) where error occurred |
+| `detail` | `str` | Error message from the TOML parser |
+
+**Example output:** `Failed to parse /path/to/.rig.toml:5:12: Expected '=' after key`
+
+### ConfigValidationError
+
+Raised when the config structure or values are invalid:
+
+```python
+from dataclasses import dataclass
+from pathlib import Path
+
+@dataclass(slots=True, frozen=True)
+class ConfigValidationError(ConfigError):
+    path: Path
+    key: str
+    detail: str
+```
+
+**Attributes:**
+
+| Attribute | Type | Description |
+|-----------|------|-------------|
+| `path` | `Path` | Path to the config file |
+| `key` | `str` | Dot-notation key path where error occurred |
+| `detail` | `str` | Description of the validation failure |
+
+**Example outputs:**
+
+- `Invalid config at /path/to/.rig.toml: [worktree] unknown key 'defualt-location' (did you mean 'default-location'?)`
+- `Invalid config at /path/to/.rig.toml: [worktree.default-location] invalid value 'invalid' (must be one of: local, sibling)`
+- `Invalid config at /path/to/.rig.toml: [worktree.sync] cannot specify both 'link' and 'extend-link' in the same file`
+
+### ConfigFileAccessError
+
+Raised when a file cannot be accessed:
+
+```python
+from dataclasses import dataclass
+from pathlib import Path
+
+@dataclass(slots=True, frozen=True)
+class ConfigFileAccessError(ConfigError):
+    path: Path
+    detail: str
+```
+
+**Attributes:**
+
+| Attribute | Type | Description |
+|-----------|------|-------------|
+| `path` | `Path` | Path to the config file |
+| `detail` | `str` | Description of the access error |
+
+**Example outputs:**
+
+- `Cannot access /path/to/.rig.toml: permission denied`
+- `Cannot access /path/to/.rig.toml: is a directory`
+
 ```python
 from rig.config import ConfigSchema, WorktreeConfig
 
@@ -307,15 +620,9 @@ new_config = replace(
 
 The following features are planned but not yet implemented.
 
-### Config files
+### Worktree-specific config
 
-Configuration will be loaded from multiple locations with layered precedence:
-
-- `~/.local/rig/config.toml` - Global user configuration
-- `.rig.toml` in ancestor directories - Group-level configuration
-- `.rig.toml` in project root - Project configuration (committed)
-- `.rig.local.toml` - Personal overrides (gitignored)
-- `.rig.worktree.toml` - Worktree-specific settings
+A fifth configuration layer, `.rig.worktree.toml`, will provide worktree-specific settings that override all other layers.
 
 ### Precedence and merging
 

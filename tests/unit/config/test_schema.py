@@ -65,8 +65,13 @@ class TestNestedDefaults:
 class TestPublicAPI:
     def test_exports_expected_symbols(self) -> None:
         expected = {
+            "ConfigError",
+            "ConfigFile",
+            "ConfigFileAccessError",
             "ConfigLayer",
+            "ConfigParseError",
             "ConfigSchema",
+            "ConfigValidationError",
             "HooksConfig",
             "LayerSpec",
             "LocationStrategy",
@@ -75,6 +80,12 @@ class TestPublicAPI:
             "PathPlaceholder",
             "SyncConfig",
             "WorktreeConfig",
+            "discover_config_files",
+            "find_ancestor_configs",
+            "get_global_config_path",
+            "get_local_config_path",
+            "get_project_config_path",
+            "parse_config_file",
         }
         assert set(config_module.__all__) == expected
 
