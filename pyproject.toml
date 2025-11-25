@@ -44,6 +44,7 @@ reportImportCycles = "error"
 [[tool.basedpyright.executionEnvironments]]
 root = "tests"
 reportUnusedCallResult = "none"
+reportUnusedParameter = "none"
 reportPrivateUsage = "none"
 
 [tool.codespell]

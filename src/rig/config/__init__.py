@@ -32,6 +32,11 @@ Public API:
     Parsing:
         parse_config_file: Parse a TOML config file into a ConfigSchema
 
+    Resolution:
+        ResolvedConfig: Fully resolved configuration with provenance
+        ResolvedMergeWarning: Warning with file provenance
+        resolve_config: Load and merge all configuration layers
+
     Paths:
         get_global_config_path: Path to ~/.local/rig/config.toml
         get_project_config_path: Path to .rig.toml in project root
@@ -56,6 +61,11 @@ from rig.config._paths import (
     get_global_config_path,
     get_local_config_path,
     get_project_config_path,
+)
+from rig.config._resolver import (
+    ResolvedConfig,
+    ResolvedMergeWarning,
+    resolve_config,
 )
 from rig.config._schema import (
     ConfigSchema,
@@ -86,6 +96,8 @@ __all__ = [
     "OutputFormat",
     "PathPatterns",
     "PathPlaceholder",
+    "ResolvedConfig",
+    "ResolvedMergeWarning",
     "SyncConfig",
     "WorktreeConfig",
     "discover_config_files",
@@ -94,4 +106,5 @@ __all__ = [
     "get_local_config_path",
     "get_project_config_path",
     "parse_config_file",
+    "resolve_config",
 ]

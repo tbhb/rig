@@ -78,6 +78,8 @@ class TestPublicAPI:
             "OutputFormat",
             "PathPatterns",
             "PathPlaceholder",
+            "ResolvedConfig",
+            "ResolvedMergeWarning",
             "SyncConfig",
             "WorktreeConfig",
             "discover_config_files",
@@ -86,6 +88,7 @@ class TestPublicAPI:
             "get_local_config_path",
             "get_project_config_path",
             "parse_config_file",
+            "resolve_config",
         }
         assert set(config_module.__all__) == expected
 
