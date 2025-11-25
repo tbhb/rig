@@ -28,8 +28,8 @@ def global_config_file(global_config_dir: Path) -> Path:
     config_file.write_text(
         """\
 [worktree]
-default_location = "sibling"
-delete_branch = true
+default-location = "sibling"
+delete-branch = true
 protected = false
 
 [worktree.paths]
@@ -56,14 +56,14 @@ def project_config_file(project_dir: Path) -> Path:
     config_file.write_text(
         """\
 [worktree]
-default_location = "local"
+default-location = "local"
 
 [worktree.sync]
 link = [".env", "node_modules"]
 copy = ["config.local.json"]
 
 [worktree.hooks]
-post_add = ["npm install", "make setup"]
+post-add = ["npm install", "make setup"]
 """
     )
     return config_file
@@ -78,8 +78,8 @@ def local_config_file(project_dir: Path) -> Path:
 protected = true
 
 [worktree.sync]
-extend_link = [".venv"]
-exclude_copy = ["config.local.json"]
+extend-link = [".venv"]
+exclude-copy = ["config.local.json"]
 """
     )
     return config_file
@@ -96,13 +96,13 @@ def ancestor_config_file(ancestor_config_dir: Path) -> Path:
     config_file.write_text(
         """\
 [worktree]
-delete_branch = false
+delete-branch = false
 
 [worktree.paths]
 sibling = "../wt/{branch}"
 
 [worktree.hooks]
-post_add = ["echo 'Ancestor hook'"]
+post-add = ["echo 'Ancestor hook'"]
 """
     )
     return config_file
@@ -127,7 +127,7 @@ def multi_ancestor_hierarchy(tmp_path: Path) -> dict[str, Path]:
     root_config.write_text(
         """\
 [worktree]
-default_location = "sibling"
+default-location = "sibling"
 
 [worktree.sync]
 link = [".env"]
@@ -138,10 +138,10 @@ link = [".env"]
     org_config.write_text(
         """\
 [worktree]
-delete_branch = false
+delete-branch = false
 
 [worktree.sync]
-extend_link = [".secrets"]
+extend-link = [".secrets"]
 """
     )
 
@@ -152,7 +152,7 @@ extend_link = [".secrets"]
 sibling = "../{repo}-wt-{branch}"
 
 [worktree.hooks]
-post_add = ["team-setup.sh"]
+post-add = ["team-setup.sh"]
 """
     )
 
@@ -163,11 +163,11 @@ post_add = ["team-setup.sh"]
 protected = true
 
 [worktree.sync]
-extend_link = ["node_modules"]
-exclude_link = [".secrets"]
+extend-link = ["node_modules"]
+exclude-link = [".secrets"]
 
 [worktree.hooks]
-extend_post_add = ["npm install"]
+extend-post-add = ["npm install"]
 """
     )
 
@@ -209,7 +209,7 @@ def invalid_schema_config(project_dir: Path) -> Path:
     config_file.write_text(
         """\
 [worktree]
-default_location = "invalid_value"
+default-location = "invalid_value"
 unknown_field = true
 
 [unknown_section]
@@ -227,18 +227,18 @@ def config_with_all_extend_exclude(project_dir: Path) -> Path:
 [worktree.sync]
 link = ["base-link"]
 copy = ["base-copy"]
-extend_link = ["extra-link"]
-extend_copy = ["extra-copy"]
-exclude_link = ["removed-link"]
-exclude_copy = ["removed-copy"]
+extend-link = ["extra-link"]
+extend-copy = ["extra-copy"]
+exclude-link = ["removed-link"]
+exclude-copy = ["removed-copy"]
 
 [worktree.hooks]
-post_add = ["base-post-add"]
-pre_remove = ["base-pre-remove"]
-extend_post_add = ["extra-post-add"]
-extend_pre_remove = ["extra-pre-remove"]
-exclude_post_add = ["removed-post-add"]
-exclude_pre_remove = ["removed-pre-remove"]
+post-add = ["base-post-add"]
+pre-remove = ["base-pre-remove"]
+extend-post-add = ["extra-post-add"]
+extend-pre-remove = ["extra-pre-remove"]
+exclude-post-add = ["removed-post-add"]
+exclude-pre-remove = ["removed-pre-remove"]
 """
     )
     return config_file
@@ -246,8 +246,8 @@ exclude_pre_remove = ["removed-pre-remove"]
 
 SAMPLE_GLOBAL_CONFIG = """\
 [worktree]
-default_location = "sibling"
-delete_branch = true
+default-location = "sibling"
+delete-branch = true
 protected = false
 
 [worktree.paths]
@@ -260,19 +260,19 @@ link = []
 copy = []
 
 [worktree.hooks]
-post_add = []
-pre_remove = []
+post-add = []
+pre-remove = []
 """
 
 SAMPLE_PROJECT_CONFIG = """\
 [worktree]
-default_location = "local"
+default-location = "local"
 
 [worktree.sync]
 link = [".env", "node_modules"]
 
 [worktree.hooks]
-post_add = ["npm install"]
+post-add = ["npm install"]
 """
 
 SAMPLE_LOCAL_CONFIG = """\
@@ -280,5 +280,5 @@ SAMPLE_LOCAL_CONFIG = """\
 protected = true
 
 [worktree.sync]
-extend_link = [".venv"]
+extend-link = [".venv"]
 """

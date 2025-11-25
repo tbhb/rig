@@ -17,8 +17,46 @@ Public API:
         PathPatterns: Path pattern templates
         SyncConfig: Path sync configuration
         HooksConfig: Lifecycle hook configuration
+
+    Errors:
+        ConfigError: Base exception for configuration errors
+        ConfigParseError: Raised when TOML parsing fails
+        ConfigValidationError: Raised when validation fails
+        ConfigFileAccessError: Raised when file access fails
+
+    Discovery:
+        ConfigFile: Represents a discovered config file
+        discover_config_files: Find all config files in resolution order
+        find_ancestor_configs: Find .rig.toml files in ancestor directories
+
+    Parsing:
+        parse_config_file: Parse a TOML config file into a ConfigSchema
+
+    Paths:
+        get_global_config_path: Path to ~/.local/rig/config.toml
+        get_project_config_path: Path to .rig.toml in project root
+        get_local_config_path: Path to .rig.local.toml in project root
 """
 
+from rig.config._discovery import (
+    ConfigFile,
+    discover_config_files,
+    find_ancestor_configs,
+)
+from rig.config._errors import (
+    ConfigError,
+    ConfigFileAccessError,
+    ConfigParseError,
+    ConfigValidationError,
+)
+from rig.config._parser import (
+    parse_config_file,
+)
+from rig.config._paths import (
+    get_global_config_path,
+    get_local_config_path,
+    get_project_config_path,
+)
 from rig.config._schema import (
     ConfigSchema,
     HooksConfig,
@@ -35,8 +73,13 @@ from rig.config._types import (
 )
 
 __all__ = [
+    "ConfigError",
+    "ConfigFile",
+    "ConfigFileAccessError",
     "ConfigLayer",
+    "ConfigParseError",
     "ConfigSchema",
+    "ConfigValidationError",
     "HooksConfig",
     "LayerSpec",
     "LocationStrategy",
@@ -45,4 +88,10 @@ __all__ = [
     "PathPlaceholder",
     "SyncConfig",
     "WorktreeConfig",
+    "discover_config_files",
+    "find_ancestor_configs",
+    "get_global_config_path",
+    "get_local_config_path",
+    "get_project_config_path",
+    "parse_config_file",
 ]
