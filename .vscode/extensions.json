@@ -1,0 +1,20 @@
+{
+  "recommendations": [
+    "detachhead.basedpyright",
+    "samuelcolvin.jinjahtml",
+    "biomejs.biome",
+    "anthropic.claude-code",
+    "streetsidesoftware.code-spell-checker",
+    "monosans.djlint",
+    "ms-azuretools.vscode-docker",
+    "editorconfig.editorconfig",
+    "tamasfe.even-better-toml",
+    "github.vscode-github-actions",
+    "wholroyd.jinja",
+    "ms-vscode.makefile-tools",
+    "yzhang.markdown-all-in-one",
+    "davidanson.vscode-markdownlint",
+    "ms-python.python",
+    "redhat.vscode-yaml"
+  ]
+}
