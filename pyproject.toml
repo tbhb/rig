@@ -49,7 +49,7 @@ reportPrivateUsage = "none"
 [tool.codespell]
 skip = "uv.lock,htmlcov,tmp,pnpm-lock.yaml,docs,plans,reviews,specs,site"
 # False positives from dependency names, abbreviations, and technical terms in lock files
-ignore-words-list = "devlop,buil,bui,braket,chec,cna"
+ignore-words-list = "worktree,worktrees"
 
 [tool.commitizen]
 name = "cz_conventional_commits"
