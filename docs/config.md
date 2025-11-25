@@ -616,6 +616,210 @@ new_config = replace(
 )
 ```
 
+## Configuration merging and resolution
+
+The configuration system merges all layers to produce a single resolved configuration with full provenance tracking. This section explains how to use the resolver in code.
+
+### resolve_config
+
+Discover, parse, and merge all configuration layers for a project:
+
+```python
+from pathlib import Path
+from rig.config import resolve_config
+
+project_root = Path("/home/user/projects/myapp")
+resolved = resolve_config(project_root)
+
+# Access the merged configuration
+print(resolved.config.worktree.default_location)  # "sibling"
+print(resolved.config.worktree.sync.link)         # (".envrc", "CLAUDE.md", ...)
+```
+
+The resolution algorithm:
+
+1. **Discover** all config file locations using `discover_config_files()`
+2. **Parse** existing files with `parse_config_file()`
+3. **Merge** in resolution order (global, ancestors, project, local)
+4. **Collect** warnings from extend/exclude operations
+5. **Track** provenance for each configuration key
+6. **Return** `ResolvedConfig` with merged config and metadata
+
+**Arguments:**
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `project_root` | `Path` | Absolute path to the project root directory |
+| `home_dir` | `Path \| None` | Home directory boundary (defaults to `Path.home()`) |
+
+**Returns:** `ResolvedConfig` containing merged configuration, all discovered layers, provenance mapping, and merge warnings.
+
+**Raises:**
+
+| Exception | When |
+|-----------|------|
+| `ConfigFileAccessError` | File cannot be accessed |
+| `ConfigParseError` | File contains invalid TOML syntax |
+| `ConfigValidationError` | Structure or values are invalid |
+
+### ResolvedConfig
+
+The result of resolution, containing the merged configuration and metadata:
+
+```python
+from dataclasses import dataclass
+from pathlib import Path
+from rig.config import ConfigSchema, ConfigFile, ResolvedMergeWarning
+
+@dataclass(slots=True, frozen=True)
+class ResolvedConfig:
+    config: ConfigSchema
+    layers: tuple[ConfigFile, ...]
+    provenance: dict[str, ConfigFile]
+    warnings: tuple[ResolvedMergeWarning, ...]
+```
+
+**Attributes:**
+
+| Attribute | Type | Description |
+|-----------|------|-------------|
+| `config` | `ConfigSchema` | Final merged configuration |
+| `layers` | `tuple[ConfigFile, ...]` | All discovered config files in resolution order |
+| `provenance` | `dict[str, ConfigFile]` | Maps dot-notation keys to the file that set their value |
+| `warnings` | `tuple[ResolvedMergeWarning, ...]` | Warnings generated during merge |
+
+### Using provenance tracking
+
+Provenance maps each configuration key to the file that provided its final value:
+
+```python
+from pathlib import Path
+from rig.config import resolve_config
+
+resolved = resolve_config(Path("/home/user/projects/myapp"))
+
+# Check which file set a value
+source = resolved.provenance.get("worktree.default-location")
+if source:
+    print(f"Set by: {source.path}")
+    print(f"Layer: {source.layer.value}")
+
+# Check sync.link provenance
+link_source = resolved.provenance.get("worktree.sync.link")
+if link_source:
+    print(f"Link paths from: {link_source.path}")
+```
+
+Provenance keys use kebab-case format (matching TOML):
+
+- Scalar fields: `worktree.default-location`, `worktree.delete-branch`
+- Nested fields: `worktree.paths.sibling`, `worktree.paths.local`
+- List fields: `worktree.sync.link`, `worktree.hooks.post-add`
+
+For list fields, provenance tracks either:
+
+- The file that set the base list, OR
+- The most recent file that used `extend-*` or `exclude-*` to modify the list
+
+### Handling warnings
+
+Warnings are generated when configuration issues are detected during merge. The most common warning is attempting to exclude items that don't exist:
+
+```python
+from pathlib import Path
+from rig.config import resolve_config
+
+resolved = resolve_config(Path("/home/user/projects/myapp"))
+
+# Display all warnings
+for warning in resolved.warnings:
+    file_path = warning.config_file.path
+    layer = warning.config_file.layer.value
+    print(f"Warning in {layer} ({file_path}):")
+    print(f"  Key: {warning.key}")
+    print(f"  Excluded item not found: {warning.excluded_item}")
+```
+
+Warnings are non-fatal but often indicate typos or stale configuration. For example:
+
+```toml
+# .rig.local.toml
+[worktree.sync]
+exclude-link = [".enrvc"]  # Typo: should be ".envrc"
+```
+
+This generates a warning:
+
+```text
+Warning in local (/home/user/projects/myapp/.rig.local.toml):
+  Key: worktree.sync.link
+  Excluded item not found: .enrvc
+```
+
+### ResolvedMergeWarning
+
+A warning from configuration resolution with context:
+
+```python
+from dataclasses import dataclass
+from rig.config import ConfigFile
+
+@dataclass(slots=True, frozen=True)
+class ResolvedMergeWarning:
+    key: str
+    excluded_item: str
+    config_file: ConfigFile
+```
+
+**Attributes:**
+
+| Attribute | Type | Description |
+|-----------|------|-------------|
+| `key` | `str` | Dot-notation key path where the warning occurred |
+| `excluded_item` | `str` | The item that triggered the warning |
+| `config_file` | `ConfigFile` | Config file that caused the warning |
+
+### Complete example
+
+A typical workflow using the resolver:
+
+```python
+from pathlib import Path
+from rig.config import resolve_config, ConfigError
+
+project_root = Path("/home/user/projects/myapp")
+
+try:
+    resolved = resolve_config(project_root)
+except ConfigError as e:
+    print(f"Configuration error: {e}")
+    exit(1)
+
+# Use the merged configuration
+config = resolved.config
+print(f"Default location: {config.worktree.default_location}")
+print(f"Delete branch: {config.worktree.delete_branch}")
+print(f"Link paths: {', '.join(config.worktree.sync.link)}")
+
+# Show which files were loaded
+print("\nLoaded configuration layers:")
+for layer in resolved.layers:
+    status = "loaded" if layer.exists else "not found"
+    print(f"  {layer.layer.value}: {layer.path} ({status})")
+
+# Check provenance for a specific key
+location_source = resolved.provenance.get("worktree.default-location")
+if location_source:
+    print(f"\nDefault location set by: {location_source.path}")
+
+# Display warnings
+if resolved.warnings:
+    print("\nConfiguration warnings:")
+    for warning in resolved.warnings:
+        print(f"  {warning.config_file.path}:")
+        print(f"    {warning.key} - excluded '{warning.excluded_item}' not found")
+```
+
 ## Coming in future releases
 
 The following features are planned but not yet implemented.
@@ -623,10 +827,6 @@ The following features are planned but not yet implemented.
 ### Worktree-specific config
 
 A fifth configuration layer, `.rig.worktree.toml`, will provide worktree-specific settings that override all other layers.
-
-### Precedence and merging
-
-Configuration layers will merge in order from most general to most specific. Scalar values will be replaced by downstream configs. List fields will support extend/exclude modifiers for incremental modification.
 
 ### CLI commands
 
