@@ -1,0 +1,427 @@
+{
+  "version": "1.0.0",
+  "skills": {
+    "skill-developer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Meta-skill for creating and managing Claude Code skills",
+      "promptTriggers": {
+        "keywords": [
+          "skill system",
+          "create skill",
+          "add skill",
+          "skill triggers",
+          "skill rules",
+          "hook system",
+          "skill development",
+          "skill-rules.json"
+        ],
+        "intentPatterns": [
+          "(how do|how does|explain).*?skill",
+          "(create|add|modify|update|build).*?skill",
+          "skill.*?(work|trigger|activate|system)"
+        ]
+      }
+    },
+    "python-dev-practices": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Python development best practices for modern Python projects",
+      "promptTriggers": {
+        "keywords": [
+          "python",
+          "setup.py",
+          "pyproject.toml",
+          "pytest",
+          "type hints",
+          "python imports",
+          "python error",
+          "python class",
+          "python module",
+          "python testing"
+        ],
+        "intentPatterns": [
+          "(create|write|implement).*?python",
+          "python.*?(code|file|script|module)",
+          "(test|testing).*?python",
+          "(hook|hooks).*?(implement|create)"
+        ]
+      },
+      "fileTriggers": {
+        "paths": ["scripts/*", "**/*.py", "**/pyproject.toml"]
+      },
+      "contentTriggers": {
+        "patterns": [
+          "@pytest",
+          "from typing import"
+        ]
+      }
+    },
+    "just-automation-practices": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Best practices for using just command runner and task automation",
+      "promptTriggers": {
+        "keywords": [
+          "just",
+          "justfile",
+          "task automation",
+          "command runner",
+          "task runner",
+          "build automation",
+          "just recipe",
+          "just command",
+          "automation workflow",
+          "development workflow"
+        ],
+        "intentPatterns": [
+          "(create|write|add|modify).*?justfile",
+          "(create|add|define).*?(just )?recipe",
+          "(setup|configure).*?(automation|workflow|tasks)",
+          "(automate|automation).*?(build|test|deploy)",
+          "just.*?(command|recipe|variable|setup)"
+        ]
+      },
+      "fileTriggers": {
+        "paths": ["**/justfile", "**/Justfile", "**/.justfile"]
+      }
+    },
+    "actions-cicd-practices": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "GitHub Actions and CI/CD best practices",
+      "promptTriggers": {
+        "keywords": [
+          "github actions",
+          "workflow",
+          "ci/cd",
+          "continuous integration",
+          "continuous deployment",
+          "actions",
+          ".github/workflows",
+          "ci pipeline",
+          "cd pipeline",
+          "automated testing",
+          "build automation"
+        ],
+        "intentPatterns": [
+          "(create|add|setup|configure).*?(workflow|action|ci|cd|pipeline)",
+          "(implement|build|develop).*?(automation|ci|cd)",
+          "(deploy|deployment).*?(automation|workflow|pipeline)",
+          "github.*?actions?"
+        ]
+      },
+      "fileTriggers": {
+        "paths": [
+          "**/.github/workflows/*.yml",
+          "**/.github/workflows/*.yaml",
+          "**/.github/actions/**/action.yml"
+        ]
+      }
+    },
+    "shell-dev-practices": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Shell scripting best practices for bash, sh, zsh",
+      "promptTriggers": {
+        "keywords": [
+          "shell",
+          "bash",
+          "sh",
+          "zsh",
+          "shell script",
+          "bash script",
+          "shell scripting",
+          "shellcheck",
+          "set -e",
+          "error handling",
+          "shell functions"
+        ],
+        "intentPatterns": [
+          "(create|write|add).*?shell.*?script",
+          "(create|write|add).*?bash.*?script",
+          "(fix|debug).*?shell.*?(script|error)",
+          "shell.*?(best practice|pattern|guideline)"
+        ]
+      },
+      "fileTriggers": {
+        "paths": [
+          "**/*.sh",
+          "**/*.bash",
+          "**/scripts/**/*.sh",
+          "**/bin/*"
+        ]
+      }
+    },
+    "testing-practices": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Testing best practices including Hypothesis, Atheris, and coverage",
+      "promptTriggers": {
+        "keywords": [
+          "test",
+          "testing",
+          "pytest",
+          "hypothesis",
+          "property-based test",
+          "fuzz test",
+          "atheris",
+          "test coverage",
+          "mutation testing",
+          "mutmut",
+          "test organization"
+        ],
+        "intentPatterns": [
+          "(write|create|add).*?test",
+          "(property-based|hypothesis).*?test",
+          "(fuzz|fuzzing).*?test",
+          "test.*?(coverage|organization|strategy)",
+          "testing.*?(pattern|practice|guideline)"
+        ]
+      },
+      "fileTriggers": {
+        "paths": [
+          "**/tests/**/*.py",
+          "**/test_*.py",
+          "**/*_test.py"
+        ]
+      }
+    },
+    "type-safety": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Type safety best practices using basedpyright and typing-extensions",
+      "promptTriggers": {
+        "keywords": [
+          "type hint",
+          "type annotation",
+          "typing",
+          "basedpyright",
+          "pyright",
+          "type checking",
+          "type safety",
+          "typing-extensions",
+          "TypedDict",
+          "ReadOnly",
+          "TypeIs",
+          "Protocol",
+          "Generic",
+          "type narrowing",
+          "type error"
+        ],
+        "intentPatterns": [
+          "(add|write|fix).*?type.*?(hint|annotation)",
+          "(resolve|fix).*?(type error|pyright)",
+          "type.*?(checking|safety|validation)",
+          "(narrow|validate).*?type"
+        ]
+      },
+      "contentTriggers": {
+        "patterns": [
+          "from typing import",
+          "from typing_extensions import",
+          "ReadOnly\\[",
+          "TypeIs\\[",
+          "TypedDict",
+          "Protocol"
+        ]
+      }
+    },
+    "benchmarking": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Performance benchmarking practices using pytest-benchmark",
+      "promptTriggers": {
+        "keywords": [
+          "benchmark",
+          "benchmarking",
+          "performance",
+          "pytest-benchmark",
+          "optimization",
+          "performance testing",
+          "regression detection",
+          "baseline",
+          "performance measurement"
+        ],
+        "intentPatterns": [
+          "(write|create|run).*?benchmark",
+          "benchmark.*?(performance|comparison|regression)",
+          "(measure|optimize).*?performance",
+          "performance.*?(testing|measurement|optimization)"
+        ]
+      },
+      "fileTriggers": {
+        "paths": [
+          "**/tests/benchmarks/**/*.py",
+          "**/test_*_benchmark.py",
+          "**/benchmark_*.py"
+        ]
+      }
+    },
+    "security-practices": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Security best practices including injection prevention and input validation",
+      "promptTriggers": {
+        "keywords": [
+          "security",
+          "command injection",
+          "path traversal",
+          "input validation",
+          "sanitization",
+          "injection prevention",
+          "security testing",
+          "vulnerability",
+          "threat model",
+          "secure by default",
+          "defense in depth"
+        ],
+        "intentPatterns": [
+          "security.*?(pattern|practice|guideline)",
+          "(prevent|protection).*?(injection|traversal)",
+          "(validate|sanitize).*?input",
+          "security.*?(test|testing|vulnerability)",
+          "threat.*?(model|analysis)"
+        ]
+      }
+    },
+    "profiling-practices": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Performance profiling best practices using py-spy and other tools",
+      "promptTriggers": {
+        "keywords": [
+          "profiling",
+          "py-spy",
+          "pyspy",
+          "flame graph",
+          "flame graphs",
+          "speedscope",
+          "performance profiling",
+          "cpu profiling",
+          "memory profiling",
+          "line profiler",
+          "cProfile",
+          "profile",
+          "profiler",
+          "bottleneck",
+          "hot path"
+        ],
+        "intentPatterns": [
+          "(profile|profiling).*?(performance|code)",
+          "(analyze|identify).*?(bottleneck|hot.*?path|performance)",
+          "(generate|create).*?flame.*?graph",
+          "py-spy.*?(record|top|dump)",
+          "(debug|debugging).*?performance",
+          "memory.*?(profiling|leak|analysis)"
+        ]
+      }
+    },
+    "error-handling": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Error handling patterns including exception hierarchies and error messages",
+      "promptTriggers": {
+        "keywords": [
+          "error handling",
+          "exception",
+          "error message",
+          "exception hierarchy",
+          "error recovery",
+          "diagnostic message",
+          "user feedback",
+          "error context"
+        ],
+        "intentPatterns": [
+          "(design|implement).*?(error|exception)",
+          "error.*?(message|handling|recovery)",
+          "exception.*?(hierarchy|design|pattern)",
+          "(improve|better).*?error.*?message"
+        ]
+      },
+      "contentTriggers": {
+        "patterns": [
+          "class.*Error.*Exception",
+          "raise.*Error"
+        ]
+      }
+    },
+    "hypothesis-strategies": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Custom Hypothesis strategy patterns for property-based testing",
+      "promptTriggers": {
+        "keywords": [
+          "hypothesis strategy",
+          "custom strategy",
+          "st.composite",
+          "@composite",
+          "strategy composition",
+          "shrinking",
+          "property test",
+          "test generation"
+        ],
+        "intentPatterns": [
+          "(create|write|design).*?strategy",
+          "hypothesis.*?strategy",
+          "property.*?(test|testing)",
+          "(generate|generator).*?(argument|option|input)"
+        ]
+      },
+      "contentTriggers": {
+        "patterns": [
+          "@st\\.composite",
+          "st\\.composite",
+          "strategies\\.composite",
+          "SearchStrategy\\[",
+          "@given\\("
+        ]
+      }
+    },
+    "dataclass-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Dataclass patterns including frozen dataclasses, slots, and immutability",
+      "promptTriggers": {
+        "keywords": [
+          "dataclass",
+          "frozen dataclass",
+          "slots",
+          "post_init",
+          "field factory",
+          "immutable",
+          "value object",
+          "dataclasses.replace"
+        ],
+        "intentPatterns": [
+          "(create|design).*?dataclass",
+          "dataclass.*?(pattern|frozen|slots)",
+          "immutable.*?(object|data)",
+          "value.*?object"
+        ]
+      },
+      "contentTriggers": {
+        "patterns": [
+          "@dataclass",
+          "frozen=True",
+          "slots=True",
+          "def __post_init__",
+          "field\\(default_factory"
+        ]
+      }
+    }
+  }
+}

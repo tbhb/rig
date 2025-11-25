@@ -1,0 +1,188 @@
+[build-system]
+requires = ["uv_build>=0.9.6,<0.10.0"]
+build-backend = "uv_build"
+
+[project]
+name = "rig"
+version = "0.1.0"
+authors = [{ name = "Tony Burns", email = "tony@tonyburns.net" }]
+description = "Personal development environment tools."
+readme = "README.md"
+requires-python = ">=3.14"
+classifiers = ["Private :: Do Not Upload"]
+dependencies = ["cyclopts>=4.3.0", "rich>=14.2.0"]
+
+[dependency-groups]
+dev = [
+  "basedpyright>=1.32.1",
+  "codespell>=2.4.1",
+  "hypothesis>=6.132.0",
+  "prek>=0.2.12",
+  "pytest-cov>=7.0.0",
+  "pytest-mock>=3.15.1",
+  "pytest>=8.4.2",
+  "ruff>=0.14.3",
+  "yamllint>=1.37.1",
+]
+
+[project.scripts]
+rig = "rig.cli:main"
+
+[tool.basedpyright]
+exclude = [
+  "**/node_modules",
+  "**/plans",
+  "**/reports",
+  "**/reviews",
+  "**/specs",
+  "**/tmp",
+]
+include = ["src", "tests"]
+pythonVersion = "3.14"
+reportImportCycles = "error"
+
+[[tool.basedpyright.executionEnvironments]]
+root = "tests"
+reportUnusedCallResult = "none"
+reportPrivateUsage = "none"
+
+[tool.codespell]
+skip = "uv.lock,htmlcov,tmp,pnpm-lock.yaml,docs,plans,reviews,specs,site"
+# False positives from dependency names, abbreviations, and technical terms in lock files
+ignore-words-list = "devlop,buil,bui,braket,chec,cna"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version_provider = "pep621"
+tag_format = "v$version"
+major_version_zero = true
+update_changelog_on_bump = true
+pre_bump_hooks = ["uv sync --all-packages --all-groups --all-extras"]
+
+[tool.pytest.ini_options]
+addopts = [
+  "--import-mode=importlib",
+  "--tb",
+  "short",
+  "--ignore=tests/benchmarks",
+]
+pythonpath = ["src"]
+filterwarnings = ["error"]
+testpaths = ["tests"]
+xfail_strict = true
+markers = [
+  "integration: mark a test as an integration test.",
+  "unit: mark a test as a unit test.",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["src/rig"]
+relative_files = true
+omit = ["tests/*", "**/__pycache__/*", "**/site-packages/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "def __repr__",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "@abstractmethod",
+  "@abc.abstractmethod",
+]
+precision = 2
+show_missing = true
+skip_covered = false
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.ruff]
+extend-exclude = [
+  "**/node_modules/**",
+  "**/plans/**",
+  "**/reports/**",
+  "**/reviews/**",
+  "**/specs/**",
+  "**/tmp/**",
+]
+force-exclude = true
+target-version = "py314"
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+select = [
+  "A",     # flake8-builtins
+  "ARG",   # flake8-unused-arguments
+  "ASYNC", # flake8-async
+  "B",     # bugbear
+  "BLE",   # flake8-blind-except
+  "C4",    # flake8-comprehensions
+  "D",     # pydocstyle
+  "DTZ",   # flake8-datetimez
+  "E",     # pycodestyle (error)
+  "EM",    # flake8-errmsg
+  "EXE",   # flake8-executable
+  "F",     # pyflakes
+  "FBT",   # flake8-boolean-trap
+  "FURB",  # refurb
+  "G",     # flake8-logging-format
+  "I",     # isort
+  "ICN",   # flake8-import-conventions
+  "ISC",   # flake8-implicit-str-concat
+  "LOG",   # flake8-logging
+  "N",     # pep8-naming
+  "PERF",  # Perflint
+  "PGH",   # pygrep-hooks
+  "PIE",   # flake8-pie
+  "PL",    # pylint
+  "PT",    # flake8-pytest-style
+  "PTH",   # flake8-use-pathlib
+  "PYI",   # flake8-pyi
+  "RET",   # flake8-return
+  "RUF",   # Ruff-specific rules
+  "S",     # flake8-bandit
+  "SIM",   # flake8-simplify
+  "SLF",   # flake8-self
+  "SLOT",  # flake8-slots
+  "TC",    # flake8-type-checking
+  "TD",    # flake8-todos
+  "TID",   # flake8-tidy-imports
+  "T10",   # flake8-debugger
+  "T20",   # flake8-print
+  "TRY",   # tryceratops
+  "UP",    # pyupgrade
+]
+ignore = ["TD003"]
+pydocstyle = { convention = "google" }
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+extra-standard-library = ["typing_extensions"]
+forced-separate = ["tests"]
+
+[tool.ruff.lint.flake8-type-checking]
+quote-annotations = true
+
+[tool.ruff.lint.flake8-unused-arguments]
+ignore-variadic-names = true
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/**" = [
+  "D",       # no docstrings in tests
+  "FBT001",  # boolean positional args in function defs
+  "FBT003",  # boolean positional args in function calls
+  "S101",    # assert statements in tests
+  "PLR0913", # too many arguments in tests
+  "PLR2004", # magic values in assertions in tests
+  "ARG002",  # unused arguments in tests
+]
+"examples/**" = ["T201"] # Allow print in examples
+"scripts/**" = ["T201"] # Allow print in scripts
