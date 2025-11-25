@@ -71,9 +71,7 @@ class TestResolvePathSafely:
         result = resolve_path_safely(path_with_dots)
         assert result == tmp_path.resolve()
 
-    def test_raises_config_file_access_error_on_oserror(
-        self, tmp_path: Path
-    ) -> None:
+    def test_raises_config_file_access_error_on_oserror(self, tmp_path: Path) -> None:
         with patch.object(Path, "resolve", side_effect=OSError("mock error")):
             with pytest.raises(ConfigFileAccessError) as exc_info:
                 resolve_path_safely(tmp_path)
@@ -145,9 +143,7 @@ class TestDiscoverConfigFiles:
         local_idx = layers.index(ConfigLayer.LOCAL)
         assert project_idx < local_idx
 
-    def test_returns_ancestors_between_global_and_project(
-        self, tmp_path: Path
-    ) -> None:
+    def test_returns_ancestors_between_global_and_project(self, tmp_path: Path) -> None:
         home = tmp_path / "home"
         home.mkdir()
         workspace = tmp_path / "workspace"
@@ -164,9 +160,7 @@ class TestDiscoverConfigFiles:
         project_idx = layers.index(ConfigLayer.PROJECT)
         assert global_idx < ancestor_idx < project_idx
 
-    def test_includes_nonexistent_files_with_exists_false(
-        self, tmp_path: Path
-    ) -> None:
+    def test_includes_nonexistent_files_with_exists_false(self, tmp_path: Path) -> None:
         project = tmp_path / "project"
         project.mkdir()
         files = discover_config_files(project, home_dir=tmp_path)
@@ -185,9 +179,7 @@ class TestDiscoverConfigFiles:
         (project / ".rig.toml").touch()
         (project / ".rig.local.toml").touch()
 
-        with patch(
-            "rig.config._paths.get_home_directory", return_value=home
-        ):
+        with patch("rig.config._paths.get_home_directory", return_value=home):
             files = discover_config_files(project, home_dir=home)
 
         existing_files = [f for f in files if f.exists]
@@ -366,9 +358,7 @@ class TestDiscoveryEdgeCases:
         assert len(existing_files) == 1
         assert existing_files[0].layer == ConfigLayer.GLOBAL
 
-    def test_discovery_with_multiple_ancestor_configs(
-        self, tmp_path: Path
-    ) -> None:
+    def test_discovery_with_multiple_ancestor_configs(self, tmp_path: Path) -> None:
         home = tmp_path / "home"
         home.mkdir()
 
@@ -394,9 +384,7 @@ class TestDiscoveryEdgeCases:
         assert ancestor_files[1].path == org / ".rig.toml"
         assert ancestor_files[2].path == team / ".rig.toml"
 
-    def test_discovery_with_all_config_types_present(
-        self, tmp_path: Path
-    ) -> None:
+    def test_discovery_with_all_config_types_present(self, tmp_path: Path) -> None:
         home = tmp_path / "home"
         home.mkdir()
         global_dir = home / ".local" / "rig"
@@ -433,9 +421,7 @@ class TestAncestorEdgeCases:
         for path in result:
             assert path.is_relative_to(tmp_path) or not path.exists()
 
-    def test_ancestor_handles_symlinked_directories(
-        self, tmp_path: Path
-    ) -> None:
+    def test_ancestor_handles_symlinked_directories(self, tmp_path: Path) -> None:
         home = tmp_path / "home"
         home.mkdir()
 
@@ -455,9 +441,7 @@ class TestAncestorEdgeCases:
 
 
 class TestPermissionErrors:
-    def test_safe_exists_handles_permission_error(
-        self, tmp_path: Path
-    ) -> None:
+    def test_safe_exists_handles_permission_error(self, tmp_path: Path) -> None:
         project = tmp_path / "project"
         project.mkdir()
 
@@ -466,9 +450,7 @@ class TestPermissionErrors:
                 discover_config_files(project, home_dir=tmp_path)
             assert "permission denied" in str(exc_info.value)
 
-    def test_safe_exists_handles_oserror_as_nonexistent(
-        self, tmp_path: Path
-    ) -> None:
+    def test_safe_exists_handles_oserror_as_nonexistent(self, tmp_path: Path) -> None:
         project = tmp_path / "project"
         project.mkdir()
 
@@ -487,18 +469,14 @@ class TestPermissionErrors:
 
 
 class TestDefaultHomeDirectory:
-    def test_discover_config_files_uses_default_home_dir(
-        self, tmp_path: Path
-    ) -> None:
+    def test_discover_config_files_uses_default_home_dir(self, tmp_path: Path) -> None:
         project = tmp_path / "project"
         project.mkdir()
         files = discover_config_files(project)
         assert files[0].layer == ConfigLayer.GLOBAL
         assert len(files) >= 3
 
-    def test_find_ancestor_configs_uses_default_home_dir(
-        self, tmp_path: Path
-    ) -> None:
+    def test_find_ancestor_configs_uses_default_home_dir(self, tmp_path: Path) -> None:
         project = tmp_path / "project"
         project.mkdir()
         result = find_ancestor_configs(project)

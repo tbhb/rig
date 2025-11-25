@@ -90,7 +90,7 @@ pre-remove = ["npm run clean"]
 
     def test_partial_config_uses_defaults(self, tmp_path: Path) -> None:
         config_file = tmp_path / "config.toml"
-        config_file.write_text('[worktree]\nprotected = true')
+        config_file.write_text("[worktree]\nprotected = true")
 
         result = parse_config_file(config_file)
 
@@ -101,11 +101,9 @@ pre-remove = ["npm run clean"]
         assert result.worktree.sync == SyncConfig()
         assert result.worktree.hooks == HooksConfig()
 
-    def test_raises_config_parse_error_on_invalid_toml(
-        self, tmp_path: Path
-    ) -> None:
+    def test_raises_config_parse_error_on_invalid_toml(self, tmp_path: Path) -> None:
         config_file = tmp_path / "config.toml"
-        config_file.write_text('[worktree\ninvalid toml')
+        config_file.write_text("[worktree\ninvalid toml")
 
         with pytest.raises(ConfigParseError) as exc_info:
             parse_config_file(config_file)
@@ -127,7 +125,7 @@ pre-remove = ["npm run clean"]
         self, tmp_path: Path
     ) -> None:
         config_file = tmp_path / "config.toml"
-        config_file.write_text('[worktree]\nprotected = true')
+        config_file.write_text("[worktree]\nprotected = true")
         config_file.chmod(0o000)
 
         try:
@@ -136,9 +134,7 @@ pre-remove = ["npm run clean"]
         finally:
             config_file.chmod(stat.S_IRUSR | stat.S_IWUSR)
 
-    def test_raises_config_file_access_error_on_directory(
-        self, tmp_path: Path
-    ) -> None:
+    def test_raises_config_file_access_error_on_directory(self, tmp_path: Path) -> None:
         directory = tmp_path / "config_dir"
         directory.mkdir()
 
@@ -217,27 +213,21 @@ class TestTypeValidation:
         config_file = tmp_path / "config.toml"
         config_file.write_text("[worktree]\ndefault-location = 123")
 
-        with pytest.raises(
-            ConfigValidationError, match="expected string, got integer"
-        ):
+        with pytest.raises(ConfigValidationError, match="expected string, got integer"):
             parse_config_file(config_file)
 
     def test_rejects_wrong_type_for_boolean_field(self, tmp_path: Path) -> None:
         config_file = tmp_path / "config.toml"
         config_file.write_text('[worktree]\ndelete-branch = "yes"')
 
-        with pytest.raises(
-            ConfigValidationError, match="expected boolean, got string"
-        ):
+        with pytest.raises(ConfigValidationError, match="expected boolean, got string"):
             parse_config_file(config_file)
 
     def test_rejects_wrong_type_for_list_field(self, tmp_path: Path) -> None:
         config_file = tmp_path / "config.toml"
         config_file.write_text('[worktree.sync]\nlink = ".env"')
 
-        with pytest.raises(
-            ConfigValidationError, match="expected array, got string"
-        ):
+        with pytest.raises(ConfigValidationError, match="expected array, got string"):
             parse_config_file(config_file)
 
     def test_rejects_non_string_list_items(self, tmp_path: Path) -> None:
@@ -253,14 +243,10 @@ class TestTypeValidation:
         config_file = tmp_path / "config.toml"
         config_file.write_text('[worktree]\ndefault-location = "invalid"')
 
-        with pytest.raises(
-            ConfigValidationError, match="invalid value 'invalid'"
-        ):
+        with pytest.raises(ConfigValidationError, match="invalid value 'invalid'"):
             parse_config_file(config_file)
 
-    def test_accepts_valid_location_strategy_sibling(
-        self, tmp_path: Path
-    ) -> None:
+    def test_accepts_valid_location_strategy_sibling(self, tmp_path: Path) -> None:
         config_file = tmp_path / "config.toml"
         config_file.write_text('[worktree]\ndefault-location = "sibling"')
 
@@ -396,9 +382,7 @@ class TestKeyConversion:
 
 
 class TestSchemaBuilding:
-    def test_build_creates_config_schema_with_worktree(
-        self, tmp_path: Path
-    ) -> None:
+    def test_build_creates_config_schema_with_worktree(self, tmp_path: Path) -> None:
         config_file = tmp_path / "config.toml"
         config_file.write_text('[worktree]\ndefault-location = "local"')
 
@@ -440,9 +424,7 @@ copy = ["data", "cache"]
         assert isinstance(result.worktree.sync.link, tuple)
         assert isinstance(result.worktree.sync.copy, tuple)
 
-    def test_build_creates_hooks_config_with_tuples(
-        self, tmp_path: Path
-    ) -> None:
+    def test_build_creates_hooks_config_with_tuples(self, tmp_path: Path) -> None:
         config_file = tmp_path / "config.toml"
         config_file.write_text("""
 [worktree.hooks]
@@ -630,9 +612,7 @@ class TestExtractErrorLocation:
 
 
 class TestPartialPathPatterns:
-    def test_partial_paths_use_defaults_for_missing(
-        self, tmp_path: Path
-    ) -> None:
+    def test_partial_paths_use_defaults_for_missing(self, tmp_path: Path) -> None:
         config_file = tmp_path / "config.toml"
         config_file.write_text("""
 [worktree.paths]

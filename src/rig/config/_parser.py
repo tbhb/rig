@@ -335,10 +335,7 @@ def _validate_list_items(
             raise ConfigValidationError(
                 path=path,
                 key=full_key,
-                detail=(
-                    f"array item {i} must be a string, "
-                    f"got {type(item).__name__}"
-                ),
+                detail=(f"array item {i} must be a string, got {type(item).__name__}"),
             )
 
 
@@ -645,8 +642,7 @@ def _suggest_similar_key(unknown: str, valid_keys: set[str]) -> str | None:
         if (
             len(unknown_lower) >= _MIN_PREFIX_LENGTH
             and len(valid_lower) >= _MIN_PREFIX_LENGTH
-            and unknown_lower[:_MIN_PREFIX_LENGTH]
-            == valid_lower[:_MIN_PREFIX_LENGTH]
+            and unknown_lower[:_MIN_PREFIX_LENGTH] == valid_lower[:_MIN_PREFIX_LENGTH]
         ):
             score += 3
 
