@@ -194,6 +194,34 @@ def test_single_item_processes_correctly(self):
 - If name needs a docstring to explain it, the name is wrong
 - Improve the name instead of adding a docstring
 
+## Type safety in tests
+
+### CRITICAL: NO type: ignore comments without approval
+
+**Test code MUST follow the same type safety standards as production code:**
+
+- NEVER add `type: ignore` comments without explicit user confirmation
+- NEVER add `# noqa` comments without explicit user confirmation
+- If a test needs to pass invalid types to verify error handling, use `cast()` explicitly
+- Document why the cast is needed with a comment
+
+**Pattern for testing invalid type handling:**
+
+```python
+from typing import cast
+
+# Testing runtime behavior with invalid input type
+# The cast explicitly documents we're bypassing type checking for this test
+test_input = cast("ExpectedType", invalid_value)
+result = function_under_test(test_input)
+```
+
+**Rationale:**
+
+- Type: ignore comments hide potential bugs
+- Explicit casts document intent clearly
+- Maintains type checker coverage across test suite
+
 ## Property-based testing
 
 ### When to use Hypothesis

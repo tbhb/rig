@@ -83,12 +83,19 @@ class TestPublicAPI:
             "SyncConfig",
             "WorktreeConfig",
             "discover_config_files",
+            "filter_layers",
             "find_ancestor_configs",
             "get_global_config_path",
             "get_local_config_path",
             "get_project_config_path",
+            "get_value_by_key",
+            "get_value_provenance",
+            "get_worktree_config_path",
             "parse_config_file",
             "resolve_config",
+            "to_dict",
+            "to_json",
+            "to_toml",
         }
         assert set(config_module.__all__) == expected
 

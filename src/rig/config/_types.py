@@ -13,20 +13,22 @@ class ConfigLayer(Enum):
     """Configuration layer identifier.
 
     Configuration layers are processed in order from lowest to highest
-    precedence: GLOBAL -> ANCESTOR -> PROJECT -> LOCAL. Each layer can
-    override or extend values from previous layers.
+    precedence: GLOBAL -> ANCESTOR -> PROJECT -> LOCAL -> WORKTREE.
+    Each layer can override or extend values from previous layers.
 
     Attributes:
         GLOBAL: User-wide defaults in ~/.local/rig/config.toml
         ANCESTOR: Directory-based configs in parent directories (.rig.toml)
         PROJECT: Project-specific config in the repository root (.rig.toml)
         LOCAL: Personal overrides gitignored in the project (.rig.local.toml)
+        WORKTREE: Worktree-specific overrides (.rig.worktree.toml)
     """
 
     GLOBAL = "global"
     ANCESTOR = "ancestor"
     PROJECT = "project"
     LOCAL = "local"
+    WORKTREE = "worktree"
 
 
 LocationStrategy = Literal["sibling", "local"]

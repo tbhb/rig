@@ -1,5 +1,6 @@
+import sys
 import warnings
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 from rich.console import Console
@@ -65,10 +66,9 @@ class TestMain:
         assert exc_info.value.code == 0
 
     def test_main_invokes_app(self) -> None:
-        # main() should invoke app() which shows help with no args
+        # main() reads sys.argv, so we must mock it to avoid pytest's args
         # Suppress Cyclopts warning about being invoked without tokens in test
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", UserWarning)
-            with pytest.raises(SystemExit) as exc_info:
-                main()
+        warnings.filterwarnings("ignore", category=UserWarning)
+        with patch.object(sys, "argv", ["rig"]), pytest.raises(SystemExit) as exc_info:
+            main()
         assert exc_info.value.code == 0
