@@ -46,6 +46,23 @@ def get_local_config_path(project_root: Path) -> Path:
     return project_root / ".rig.local.toml"
 
 
+def get_worktree_config_path(worktree_path: Path) -> Path:
+    """Return the path to the worktree config file.
+
+    Args:
+        worktree_path: Absolute path to the worktree directory.
+
+    Returns:
+        Absolute path to .rig.worktree.toml in the worktree.
+
+    Example:
+        >>> path = get_worktree_config_path(Path("/home/user/projects/myrepo-feature"))
+        >>> print(path)
+        /home/user/projects/myrepo-feature/.rig.worktree.toml
+    """
+    return worktree_path / ".rig.worktree.toml"
+
+
 def get_home_directory() -> Path:
     """Return the user's home directory.
 

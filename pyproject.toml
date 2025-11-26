@@ -43,6 +43,7 @@ reportImportCycles = "error"
 
 [[tool.basedpyright.executionEnvironments]]
 root = "tests"
+extraPaths = ["."]
 reportUnusedCallResult = "none"
 reportUnusedParameter = "none"
 reportPrivateUsage = "none"
@@ -67,7 +68,7 @@ addopts = [
   "short",
   "--ignore=tests/benchmarks",
 ]
-pythonpath = ["src"]
+pythonpath = ["src", "."]
 filterwarnings = ["error"]
 testpaths = ["tests"]
 xfail_strict = true

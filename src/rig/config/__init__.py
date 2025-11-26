@@ -37,10 +37,21 @@ Public API:
         ResolvedMergeWarning: Warning with file provenance
         resolve_config: Load and merge all configuration layers
 
+    Query:
+        get_value_by_key: Get config value by dot-notation key
+        get_value_provenance: Get value and source layer
+        filter_layers: Filter config files by layer
+
+    Serialization:
+        to_dict: Convert ConfigSchema to dictionary
+        to_toml: Convert ConfigSchema to TOML string
+        to_json: Convert ConfigSchema to JSON string
+
     Paths:
         get_global_config_path: Path to ~/.local/rig/config.toml
         get_project_config_path: Path to .rig.toml in project root
         get_local_config_path: Path to .rig.local.toml in project root
+        get_worktree_config_path: Path to .rig.worktree.toml in worktree
 """
 
 from rig.config._discovery import (
@@ -61,6 +72,12 @@ from rig.config._paths import (
     get_global_config_path,
     get_local_config_path,
     get_project_config_path,
+    get_worktree_config_path,
+)
+from rig.config._query import (
+    filter_layers,
+    get_value_by_key,
+    get_value_provenance,
 )
 from rig.config._resolver import (
     ResolvedConfig,
@@ -73,6 +90,11 @@ from rig.config._schema import (
     PathPatterns,
     SyncConfig,
     WorktreeConfig,
+)
+from rig.config._serialization import (
+    to_dict,
+    to_json,
+    to_toml,
 )
 from rig.config._types import (
     ConfigLayer,
@@ -101,10 +123,17 @@ __all__ = [
     "SyncConfig",
     "WorktreeConfig",
     "discover_config_files",
+    "filter_layers",
     "find_ancestor_configs",
     "get_global_config_path",
     "get_local_config_path",
     "get_project_config_path",
+    "get_value_by_key",
+    "get_value_provenance",
+    "get_worktree_config_path",
     "parse_config_file",
     "resolve_config",
+    "to_dict",
+    "to_json",
+    "to_toml",
 ]

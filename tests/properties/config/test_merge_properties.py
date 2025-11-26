@@ -25,7 +25,7 @@ from rig.config._merge import (
     merge_worktree_configs,
 )
 
-from .test_schema_properties import (
+from tests.properties.config.conftest import (
     config_schemas,
     file_path_text,
     hooks_configs,

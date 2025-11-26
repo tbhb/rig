@@ -12,7 +12,8 @@ Before creating the plan, understand the codebase context by launching **Explore
 **Launch these 3 Explore agents in a single message (parallel execution):**
 
 1. **Codebase structure explorer**
-   ```
+
+   ```text
    Explore the overall structure of this codebase:
    - What is the project architecture? (src/ layout, module organization)
    - What patterns are used for CLI commands? (look in src/rig/commands/)
@@ -21,7 +22,8 @@ Before creating the plan, understand the codebase context by launching **Explore
    ```
 
 2. **Related implementation explorer**
-   ```
+
+   ```text
    Search for existing implementations similar to the feature in the spec at: $ARGUMENTS
    - Are there existing modules that this feature will extend or depend on?
    - What patterns have been used for similar functionality?
@@ -30,7 +32,8 @@ Before creating the plan, understand the codebase context by launching **Explore
    ```
 
 3. **Testing patterns explorer**
-   ```
+
+   ```text
    Explore testing patterns in this codebase:
    - How are unit tests structured?
    - Are there property-based tests using Hypothesis? What strategies exist?
@@ -65,6 +68,7 @@ Launch **Plan agents in parallel** using the Task tool to get different perspect
    - Output: Proposed stage list with dependencies and rationale
 
 **Synthesize the perspectives** to create the final stage breakdown:
+
 - Balance granularity with practical stage count
 - Stage 0 must cover all foundation types/data structures
 - Final stage must be integration testing and acceptance
@@ -78,6 +82,7 @@ Using insights from exploration and stage design:
 2. **Generate all plan files** using the templates below
 
 Incorporate codebase-specific details discovered during exploration:
+
 - Actual module paths that will be created/modified
 - Existing patterns to follow
 - Shared utilities to reuse
@@ -248,7 +253,7 @@ Run all gates with: `just lint && just test`
 
 Each stage results in a single commit using this format:
 
-```
+```text
 feat(<scope>): <brief description>
 
 <detailed description of what was implemented>
@@ -371,6 +376,7 @@ Guidance from completed stages:
 1. **Don't write useless tests that just "test the framework"**: Tests should verify actual behavior and edge cases, not simply confirm that Python dataclasses or pytest fixtures work as expected. Every test should have a clear purpose tied to the implementation.
 
 2. **Don't commit anything in the plans directory**: Plan files, reports, and progress updates in `plans/` are working documents that track the implementation process but should not be included in stage commits. Only commit production code, tests, and documentation in `docs/`.
+
 ```
 
 ### 2. `plans/<feature>/stage-0-<name>.md`
@@ -469,6 +475,7 @@ When complete, update:
 ### 3. Subsequent stage files
 
 Follow the same structure as Stage 0, but:
+
 - Update dependencies
 - List stage-specific deliverables
 - Include stage-specific technical requirements
@@ -477,6 +484,7 @@ Follow the same structure as Stage 0, but:
 ### 4. Final stage file
 
 The last stage should be `stage-N-final-review.md` covering:
+
 - Code review of entire implementation
 - Test architecture review
 - Documentation review
@@ -496,7 +504,7 @@ Copy and paste the appropriate prompt to start each stage. Each stage should be 
 
 ## Stage 0 - <name>
 
-```
+```text
 Execute Stage 0 of the <feature> implementation plan.
 
 **CRITICAL: You are a COORDINATOR ONLY.** Do NOT write any code, tests, or documentation directly. Delegate ALL implementation work to agents.
@@ -504,6 +512,7 @@ Execute Stage 0 of the <feature> implementation plan.
 Read the plan at `plans/<feature>/plan.md` and stage details at `plans/<feature>/stage-0-<name>.md`.
 
 Your responsibilities:
+
 1. Invoke agents to do work
 2. Run quality gates (`just lint && just test`)
 3. Update progress tracking in plan files
@@ -537,6 +546,7 @@ Workflow:
    - Ensure >95% coverage
 
 When all gates pass:
+
 1. Update stage file with completion status
 2. Update plan.md stage status table
 3. Invoke an agent to write report to plans/<feature>/reports/stage-0-report-YYYY-MM-DD.md
@@ -551,6 +561,7 @@ Do not proceed to Stage 1. End session after commit.
 <Similar prompt with stage-specific details>
 
 ...
+
 ```
 
 ### 6. `plans/<feature>/reports/`

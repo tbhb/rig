@@ -474,6 +474,16 @@ class TestErrorMessages:
         error_str = str(exc_info.value)
         assert str(nonexistent) in error_str
 
+    def test_access_error_str_format(self, tmp_path: Path) -> None:
+        error = ConfigFileAccessError(
+            path=tmp_path / "test.toml",
+            detail="permission denied",
+        )
+        error_str = str(error)
+        assert "Cannot access" in error_str
+        assert "test.toml" in error_str
+        assert "permission denied" in error_str
+
 
 class TestEdgeCases:
     def test_handles_empty_arrays(self, tmp_path: Path) -> None:
