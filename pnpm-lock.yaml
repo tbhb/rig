@@ -15,8 +15,8 @@ importers:
         specifier: 11.12.0
         version: 11.12.0(puppeteer@23.11.1)
       markdownlint-cli2:
-        specifier: 0.18.1
-        version: 0.18.1
+        specifier: 0.20.0
+        version: 0.20.0
 
 packages:
 
@@ -245,8 +245,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
-  '@sindresorhus/merge-streams@2.3.0':
-    resolution: {integrity: sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==}
+  '@sindresorhus/merge-streams@4.0.0':
+    resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
   '@swc/helpers@0.5.17':
@@ -369,8 +369,8 @@ packages:
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
-  '@types/node@24.10.1':
-    resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
+  '@types/node@24.10.2':
+    resolution: {integrity: sha512-WOhQTZ4G8xZ1tjJTvKOpyEVSGgOTvJAfDK3FNFgELyaTpzhdgHVHeqW8V+UJvzF5BT+/B54T/1S2K6gd9c7bbA==}
 
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
@@ -458,8 +458,8 @@ packages:
       bare-abort-controller:
         optional: true
 
-  bare-fs@4.5.1:
-    resolution: {integrity: sha512-zGUCsm3yv/ePt2PHNbVxjjn0nNB1MkIaR4wOCxJ2ig5pCf5cCVAYJXVhQg/3OhhJV6DB1ts7Hv0oUaElc2TPQg==}
+  bare-fs@4.5.2:
+    resolution: {integrity: sha512-veTnRzkb6aPHOvSKIOy60KzURfBdUflr5VReI+NSaPL6xf+XLdONQgZgpYvUuZLVQ8dCqxpBAudaOM1+KpAUxw==}
     engines: {bare: '>=1.16.0'}
     peerDependencies:
       bare-buffer: '*'
@@ -927,6 +927,10 @@ packages:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
 
+  get-east-asian-width@1.4.0:
+    resolution: {integrity: sha512-QZjmEOC+IT1uk6Rx0sX22V6uHWVwbdbxf1faPqJ1QhLdGgsRGCZoyaQBm/piRdJy/D2um6hM1UP7ZEeQ4EkP+Q==}
+    engines: {node: '>=18'}
+
   get-stream@5.2.0:
     resolution: {integrity: sha512-nBF+F1rAZVCu/p7rjzgA+Yb4lfYXrpl7a6VmJrU8wF9I1CKvP/QwPNZHnOlwbTkY6dvtFIzFMSyQXbLoTQPRpA==}
     engines: {node: '>=8'}
@@ -951,9 +955,9 @@ packages:
     resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
     engines: {node: '>=18'}
 
-  globby@14.1.0:
-    resolution: {integrity: sha512-0Ia46fDOaT7k4og1PDW4YbodWWr3scS2vAr2lTbsplOt2WkKp0vQbkI9wKis/T5LV/dqPjO3bpS/z6GTJB82LA==}
-    engines: {node: '>=18'}
+  globby@15.0.0:
+    resolution: {integrity: sha512-oB4vkQGqlMl682wL1IlWd02tXCbquGWM4voPEI85QmNKCaw8zGTm1f1rubFgkg3Eli2PtKlFgrnmUqasbQWlkw==}
+    engines: {node: '>=20'}
 
   hachure-fill@0.5.2:
     resolution: {integrity: sha512-3GKBOn+m2LX9iq+JC1064cSFprJY4jL1jCXTcpnfER5HYE2l/4EfWSGzkPa/ZDBmYI0ZOEj5VHV/eKnPGkHuOg==}
@@ -1078,8 +1082,8 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  js-yaml@4.1.0:
-    resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
+  js-yaml@4.1.1:
+    resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
     hasBin: true
 
   json-parse-even-better-errors@2.3.1:
@@ -1090,6 +1094,10 @@ packages:
 
   katex@0.16.25:
     resolution: {integrity: sha512-woHRUZ/iF23GBP1dkDQMh1QBad9dmr8/PAwNA54VrSOVYgI12MAcE14TqnDdQOdzyEonGzMepYnqBMYdsoAr8Q==}
+    hasBin: true
+
+  katex@0.16.27:
+    resolution: {integrity: sha512-aeQoDkuRWSqQN6nSvVCEFvfXdqo1OQiCmmW1kc9xSdjutPv7BGO7pqY9sQRJpMOGrEdfDgF2TfRXe5eUAD2Waw==}
     hasBin: true
 
   khroma@2.1.0:
@@ -1139,18 +1147,18 @@ packages:
     resolution: {integrity: sha512-a54IwgWPaeBCAAsv13YgmALOF1elABB08FxO9i+r4VFk5Vl4pKokRPeX8u5TCgSsPi6ec1otfLjdOpVcgbpshg==}
     hasBin: true
 
-  markdownlint-cli2-formatter-default@0.0.5:
-    resolution: {integrity: sha512-4XKTwQ5m1+Txo2kuQ3Jgpo/KmnG+X90dWt4acufg6HVGadTUG5hzHF/wssp9b5MBYOMCnZ9RMPaU//uHsszF8Q==}
+  markdownlint-cli2-formatter-default@0.0.6:
+    resolution: {integrity: sha512-VVDGKsq9sgzu378swJ0fcHfSicUnMxnL8gnLm/Q4J/xsNJ4e5bA6lvAz7PCzIl0/No0lHyaWdqVD2jotxOSFMQ==}
     peerDependencies:
       markdownlint-cli2: '>=0.0.4'
 
-  markdownlint-cli2@0.18.1:
-    resolution: {integrity: sha512-/4Osri9QFGCZOCTkfA8qJF+XGjKYERSHkXzxSyS1hd3ZERJGjvsUao2h4wdnvpHp6Tu2Jh/bPHM0FE9JJza6ng==}
+  markdownlint-cli2@0.20.0:
+    resolution: {integrity: sha512-esPk+8Qvx/f0bzI7YelUeZp+jCtFOk3KjZ7s9iBQZ6HlymSXoTtWGiIRZP05/9Oy2ehIoIjenVwndxGtxOIJYQ==}
     engines: {node: '>=20'}
     hasBin: true
 
-  markdownlint@0.38.0:
-    resolution: {integrity: sha512-xaSxkaU7wY/0852zGApM8LdlIfGCW8ETZ0Rr62IQtAnUMlMuifsg09vWJcNYeL4f0anvr8Vo4ZQar8jGpV0btQ==}
+  markdownlint@0.40.0:
+    resolution: {integrity: sha512-UKybllYNheWac61Ia7T6fzuQNDZimFIpCg2w6hHjgV1Qu0w1TV0LlSgryUGzM0bkKQCBhy2FDhEELB73Kb0kAg==}
     engines: {node: '>=20'}
 
   marked@16.4.2:
@@ -1612,6 +1620,10 @@ packages:
     resolution: {integrity: sha512-HnLOCR3vjcY8beoNLtcjZ5/nxn2afmME6lhrDrebokqMap+XbeW8n9TXpPDOqdGK5qcI3oT0GKTW6wC7EMiVqA==}
     engines: {node: '>=12'}
 
+  string-width@8.1.0:
+    resolution: {integrity: sha512-Kxl3KJGb/gxkaUMOjRsQ8IrXiGW75O4E3RPjFIINOVH8AMl2SQ/yWdTzWwF3FevIX9LcMAjJW+GRwAlAbTSXdg==}
+    engines: {node: '>=20'}
+
   string_decoder@1.3.0:
     resolution: {integrity: sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==}
 
@@ -1753,8 +1765,8 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
-  ws@8.18.0:
-    resolution: {integrity: sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==}
+  ws@8.18.3:
+    resolution: {integrity: sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -2052,7 +2064,7 @@ snapshots:
     dependencies:
       react: 19.2.0
 
-  '@sindresorhus/merge-streams@2.3.0': {}
+  '@sindresorhus/merge-streams@4.0.0': {}
 
   '@swc/helpers@0.5.17':
     dependencies:
@@ -2195,7 +2207,7 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
-  '@types/node@24.10.1':
+  '@types/node@24.10.2':
     dependencies:
       undici-types: 7.16.0
     optional: true
@@ -2207,7 +2219,7 @@ snapshots:
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 24.10.1
+      '@types/node': 24.10.2
     optional: true
 
   '@zenuml/core@3.41.6':
@@ -2284,7 +2296,7 @@ snapshots:
 
   bare-events@2.8.2: {}
 
-  bare-fs@4.5.1:
+  bare-fs@4.5.2:
     dependencies:
       bare-events: 2.8.2
       bare-path: 3.0.0
@@ -2437,7 +2449,7 @@ snapshots:
     dependencies:
       env-paths: 2.2.1
       import-fresh: 3.3.1
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       parse-json: 5.2.0
 
   cross-spawn@7.0.6:
@@ -2762,6 +2774,8 @@ snapshots:
 
   get-caller-file@2.0.5: {}
 
+  get-east-asian-width@1.4.0: {}
+
   get-stream@5.2.0:
     dependencies:
       pump: 3.0.3
@@ -2793,9 +2807,9 @@ snapshots:
 
   globals@15.15.0: {}
 
-  globby@14.1.0:
+  globby@15.0.0:
     dependencies:
-      '@sindresorhus/merge-streams': 2.3.0
+      '@sindresorhus/merge-streams': 4.0.0
       fast-glob: 3.3.3
       ignore: 7.0.5
       path-type: 6.0.0
@@ -2896,7 +2910,7 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
-  js-yaml@4.1.0:
+  js-yaml@4.1.1:
     dependencies:
       argparse: 2.0.1
 
@@ -2905,6 +2919,10 @@ snapshots:
   jsonc-parser@3.3.1: {}
 
   katex@0.16.25:
+    dependencies:
+      commander: 8.3.0
+
+  katex@0.16.27:
     dependencies:
       commander: 8.3.0
 
@@ -2955,23 +2973,23 @@ snapshots:
       punycode.js: 2.3.1
       uc.micro: 2.1.0
 
-  markdownlint-cli2-formatter-default@0.0.5(markdownlint-cli2@0.18.1):
+  markdownlint-cli2-formatter-default@0.0.6(markdownlint-cli2@0.20.0):
     dependencies:
-      markdownlint-cli2: 0.18.1
+      markdownlint-cli2: 0.20.0
 
-  markdownlint-cli2@0.18.1:
+  markdownlint-cli2@0.20.0:
     dependencies:
-      globby: 14.1.0
-      js-yaml: 4.1.0
+      globby: 15.0.0
+      js-yaml: 4.1.1
       jsonc-parser: 3.3.1
       markdown-it: 14.1.0
-      markdownlint: 0.38.0
-      markdownlint-cli2-formatter-default: 0.0.5(markdownlint-cli2@0.18.1)
+      markdownlint: 0.40.0
+      markdownlint-cli2-formatter-default: 0.0.6(markdownlint-cli2@0.20.0)
       micromatch: 4.0.8
     transitivePeerDependencies:
       - supports-color
 
-  markdownlint@0.38.0:
+  markdownlint@0.40.0:
     dependencies:
       micromark: 4.0.2
       micromark-core-commonmark: 2.0.3
@@ -2981,6 +2999,7 @@ snapshots:
       micromark-extension-gfm-table: 2.1.1
       micromark-extension-math: 3.1.0
       micromark-util-types: 2.0.2
+      string-width: 8.1.0
     transitivePeerDependencies:
       - supports-color
 
@@ -3076,7 +3095,7 @@ snapshots:
     dependencies:
       '@types/katex': 0.16.7
       devlop: 1.1.0
-      katex: 0.16.25
+      katex: 0.16.27
       micromark-factory-space: 2.0.1
       micromark-util-character: 2.1.1
       micromark-util-symbol: 2.0.1
@@ -3415,7 +3434,7 @@ snapshots:
       debug: 4.4.3
       devtools-protocol: 0.0.1367902
       typed-query-selector: 2.12.0
-      ws: 8.18.0
+      ws: 8.18.3
     transitivePeerDependencies:
       - bare-abort-controller
       - bare-buffer
@@ -3570,6 +3589,11 @@ snapshots:
       emoji-regex: 9.2.2
       strip-ansi: 7.1.2
 
+  string-width@8.1.0:
+    dependencies:
+      get-east-asian-width: 1.4.0
+      strip-ansi: 7.1.2
+
   string_decoder@1.3.0:
     dependencies:
       safe-buffer: 5.2.1
@@ -3633,7 +3657,7 @@ snapshots:
       pump: 3.0.3
       tar-stream: 3.1.7
     optionalDependencies:
-      bare-fs: 4.5.1
+      bare-fs: 4.5.2
       bare-path: 3.0.0
     transitivePeerDependencies:
       - bare-abort-controller
@@ -3740,7 +3764,7 @@ snapshots:
 
   wrappy@1.0.2: {}
 
-  ws@8.18.0: {}
+  ws@8.18.3: {}
 
   y18n@5.0.8: {}
 
